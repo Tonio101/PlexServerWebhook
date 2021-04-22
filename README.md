@@ -50,7 +50,7 @@ python3 -m pip install -r requirements.txt
 ### Enable Webhook Server
 
 ```bash
-python3 plex_webhook.py
+python3 plex_webhook.py --phone <YOUR_PHONE_NUMBER>
 ```
 
 ### Enable Webhook on Plex Server Settings
