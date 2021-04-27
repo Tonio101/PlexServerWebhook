@@ -68,3 +68,10 @@ Or send a `POST` request using curl:
 curl -kv -X POST -H "Content-Type: application/json" \
 -d '{"username": "Hello", "content": "World"}' "http://<YOUR_SERVER_IP>:6669/webhook"
 ```
+
+### Create a Cron Job to Start the Webhook Process
+
+```bash
+crontab -e
+* * * * * <your_path>/start_plex_webhook.sh
+```
