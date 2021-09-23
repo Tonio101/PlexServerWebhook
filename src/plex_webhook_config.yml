@@ -1,0 +1,12 @@
+SMSInfo:
+  # Don't use your main gmail account
+  Email: '<email>'
+  Password: '<pass>'
+  # https://en.wikipedia.org/wiki/SMS_gateway
+  SMSGateway: '<sms_gateway>'
+  SMTPServer: 'smtp.gmail.com'
+  SMTPPort: 587
+
+FlaskApp:
+  Host: '0.0.0.0'
+  Port: 6669 
