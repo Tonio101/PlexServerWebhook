@@ -1,0 +1,14 @@
+[Unit]
+Description=Plex Webhook Service
+After=network.service
+
+[Service]
+ExecStart=/home/antonio/PlexServerWebhook/start_plex_webhook.sh
+WorkingDirectory=/home/antonio/PlexServerWebhook
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=antonio
+
+[Install]
+WantedBy=multi-user.target
