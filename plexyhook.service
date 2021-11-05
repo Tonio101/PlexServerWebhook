@@ -7,8 +7,9 @@ ExecStart=/home/antonio/PlexServerWebhook/start_plex_webhook.sh
 WorkingDirectory=/home/antonio/PlexServerWebhook
 StandardOutput=inherit
 StandardError=inherit
-Restart=always
 User=antonio
+Restart=on-failure
+RestartSec=60s
 
 [Install]
 WantedBy=multi-user.target
