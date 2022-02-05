@@ -1,6 +1,3 @@
 argparse
 flask
 logging
-smtplib
-json
-yaml

@@ -15,10 +15,54 @@ After creating your gmail account:<br/>
 <li>Go to https://accounts.google.com/DisplayUnlockCaptcha and click Continue.</li>
 </ol>
 
+### Install Python3 required modules:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+### Enable Webhook Server
+
+Add credentials to `src/plex_webhook_config.yml` and [SMS Gateway](https://www.freecarrierlookup.com/)
+
+Run `start_plex_webhook.sh` to enable the service.
+
+Add the following URL to the Plex server webhook settings:<br/>
+
+```bash
+http://<YOUR_SERVER_IP>:6669/webhook
+```
+
+Test the Webhook server by playing your media files in Plex.<br/>
+Or send a `POST` request using curl:
+```bash
+curl -kv -X POST -H "Content-Type: application/json" \
+-d '{"username": "Hello", "content": "World"}' "http://<YOUR_SERVER_IP>:6669/webhook"
+```
+
+### Create WebHook Plex Service
+
+After you confirmed that its working create a service.<br/>
+Change the paths in `plexyhook.service`.
+
+```bash
+sudo cp plexyhook.service /etc/systemd/system/
+sudo systemctl enable plexyhook.service
+sudo systemctl start plexyhook.service
+```
+
+### Create a Cron Job to Start the Webhook Process
+
+```bash
+crontab -e
+* * * * * <your_path>/start_plex_webhook.sh
+```
+
+### Send Text Messages via Command Line
+
 Install mail utilities:<br/>
 ```bash
-  sudo apt install ssmtp
-  sudo apt install mailutils
+  sudo apt install ssmtp mailutils -y
 ```
 
 In `/etc/ssmtp/ssmtp.conf` include:<br/>
@@ -37,41 +81,6 @@ To send a text message:<br/>
 You can find your service provider SMS gateway address [here](https://www.freecarrierlookup.com/)
 
 ```bash
-  echo "World!" | mail -s 'Hello' <PHONE_NUMBER>@tmomail.net
-```
-That's it! Now you can send text messages via command line.
-
-### Install Python3 required modules:
-
-```bash
-python3 -m pip install -r requirements.txt
+  echo "Hello World!" | mail -s 'Test' <PHONE_NUMBER>@tmomail.net
 ```
 
-### Enable Webhook Server
-
-```bash
-python3 plex_webhook.py --phone <YOUR_PHONE_NUMBER>
-```
-
-### Enable Webhook on Plex Server Settings
-
-Add the following URL to the Plex server webhook settings:<br/>
-
-```bash
-http://<YOUR_SERVER_IP>:6669/webhook
-```
-
-Test the webhook server by playing your media files in Plex.<br/>
-
-Or send a `POST` request using curl:
-```bash
-curl -kv -X POST -H "Content-Type: application/json" \
--d '{"username": "Hello", "content": "World"}' "http://<YOUR_SERVER_IP>:6669/webhook"
-```
-
-### Create a Cron Job to Start the Webhook Process
-
-```bash
-crontab -e
-* * * * * <your_path>/start_plex_webhook.sh
-```
