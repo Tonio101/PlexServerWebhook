@@ -8,6 +8,7 @@ import yaml
 from flask import Flask, request, Response
 from logger import Logger
 from model_data import PlexUserEvent, SMSMessage
+from gcp_send_message import GcpSendMessage
 
 log = Logger.getInstance().getLogger()
 APP = Flask(__name__)
@@ -55,11 +56,21 @@ def main(argv):
             print(exc)
             sys.exit(2)
 
-    sms = SMSMessage(email=config['SMSInfo']['Email'],
-                     pas=config['SMSInfo']['Password'],
-                     sms_gateway=config['SMSInfo']['SMSGateway'],
-                     smtp_server=config['SMSInfo']['SMTPServer'],
-                     smtp_port=config['SMSInfo']['SMTPPort'])
+    # Deprecated and no longer supported by Google
+    # sms = SMSMessage(email=config['SMSInfo']['Email'],
+    #                  pas=config['SMSInfo']['Password'],
+    #                  sms_gateway=config['SMSInfo']['SMSGateway'],
+    #                  smtp_server=config['SMSInfo']['SMTPServer'],
+    #                  smtp_port=config['SMSInfo']['SMTPPort'])
+
+    gcp_sms_info = config['GCPSMSInfo']
+    sms = GcpSendMessage(
+        auth_client_secret=gcp_sms_info['ClientSecretFile'],
+        from_email=gcp_sms_info['FromEmail'],
+        to_email=gcp_sms_info['ToEmail'],
+        subject_line='Plex Server Notification'
+    )
+    sms.authenticate_gmail_api()
 
     APP.run(host=config['FlaskApp']['Host'], port=config['FlaskApp']['Port'],
             debug=args.debug)
