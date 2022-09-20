@@ -19,13 +19,17 @@ def respond():
     """
     Handle POST request sent from Plex server
     """
-    data = json.loads(request.form.get('payload'))
-    log.debug(data)
-    log.debug("\n\n\n")
+    try:
+        data = json.loads(request.form.get('payload'))
+        log.debug(data)
+        log.debug("\n\n\n")
 
-    current_user = PlexUserEvent(data)
-    log.info(current_user)
-    sms.send_message(body=current_user.__str__())
+        current_user = PlexUserEvent(data)
+        log.info(current_user)
+        sms.send_message(body=current_user.__str__())
+    except Exception as e:
+        log.error(e)
+        log.error(data)
 
     return Response(status=200)
 
