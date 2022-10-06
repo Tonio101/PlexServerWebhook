@@ -7,6 +7,13 @@ SMSInfo:
   SMTPServer: 'smtp.gmail.com'
   SMTPPort: 587
 
+GCPSMSInfo:
+  FromEmail: 'your_email@gmail.com'
+  # https://en.wikipedia.org/wiki/SMS_gateway
+  ToEmail: ''
+  # Full path to the file
+  ClientSecretFile: ''
+
 FlaskApp:
   Host: '0.0.0.0'
   Port: 6669 

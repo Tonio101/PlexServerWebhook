@@ -3,17 +3,13 @@ import smtplib
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from logger import Logger
 from smtplib import SMTPServerDisconnected, SMTPNotSupportedError,\
                     SMTPSenderRefused
-
+from logger import Logger
 log = Logger.getInstance().getLogger()
 
 
 class PlexUserEvent(object):
-    """
-    Object representation of a plex user event.
-    """
 
     def __init__(self, data):
         self.event = data['event']
@@ -43,9 +39,6 @@ class PlexUserEvent(object):
 
 
 class SMSMessage(object):
-    """
-    Send SMS messages.
-    """
 
     def __init__(self, email, pas, sms_gateway,
                  smtp_server='smtp.gmail.com', smtp_port=587):

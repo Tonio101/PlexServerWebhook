@@ -6,19 +6,16 @@ import sys
 import yaml
 
 from flask import Flask, request, Response
-from logger import Logger
-from model_data import PlexUserEvent, SMSMessage
+from model_data import PlexUserEvent
 from gcp_send_message import GcpSendMessage
 
+from logger import Logger
 log = Logger.getInstance().getLogger()
 APP = Flask(__name__)
 
 
 @APP.route('/webhook', methods=['POST'])
 def respond():
-    """
-    Handle POST request sent from Plex server
-    """
     try:
         data = json.loads(request.form.get('payload'))
         log.debug(data)
@@ -26,7 +23,11 @@ def respond():
 
         current_user = PlexUserEvent(data)
         log.info(current_user)
-        sms.send_message(body=current_user.__str__())
+        result = sms.send_message(body=current_user.__str__())
+        log.info("Result: {}".format(
+            result
+        ))
+
     except Exception as e:
         log.error(e)
         log.error(data)
@@ -49,6 +50,7 @@ def main(argv):
 
     if args.debug:
         Logger.getInstance().enableDebug()
+    Logger.getInstance().enableDebug()
 
     log.debug(args)
 

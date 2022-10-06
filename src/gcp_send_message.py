@@ -15,6 +15,9 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from mimetypes import guess_type as guess_mime_type
 
+from logger import Logger
+log = Logger.getInstance().getLogger()
+
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 DEFAULT_SUBJECT_LINE = 'Alert!'
 
@@ -95,10 +98,12 @@ class GcpSendMessage(object):
             for fname in attachments:
                 self.add_attachment(mail, fname)
 
+        log.info(mail)
         return {'raw': urlsafe_b64encode(mail.as_bytes()).decode()}
 
     def send_message(self, body, attachments=[]):
         return self.services_gmail_api.users().messages().send(
-                userId="me",
+                # userId="me",
+                userId=self.from_email,
                 body=self.create_mail(body, attachments)
             ).execute()
